@@ -1,0 +1,7 @@
+streamlit
+google-genai
+streamlit-gsheets
+pandas
+pillow
+gtts
+plotly
