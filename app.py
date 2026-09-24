@@ -9,19 +9,16 @@ from datetime import datetime
 import os
 
 # ==============================================================================
-# 1. CẤU HÌNH GIAO DIỆN STREAMLIT (UI/UX TRẺ TRUNG, MỀM MẠI)
+# 1. CẤU HÌNH GIAO DIỆN STREAMLIT
 # ==============================================================================
 st.set_page_config(page_title="GSToán - Gia Sư Toán THPT", page_icon="📐", layout="wide")
 
 st.markdown("""
 <style>
-    .stCard {
-        border-radius: 16px;
-        background-color: #F8F9FA;
-        padding: 22px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        margin-bottom: 20px;
-        border: 1px solid #E9ECEF;
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        border-radius: 16px !important;
+        background-color: #F8F9FA !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
     }
     .stButton>button {
         border-radius: 12px;
@@ -172,13 +169,10 @@ if role == "Học sinh":
         flowers = 30
 
     # KHỐI HIỂN THỊ VƯỜN HOA TRI THỨC TRÊN SIDEBAR
-    st.sidebar.markdown(f"""
-    <div style="background-color: #FFF0F5; border: 2px solid #FFB6C1; border-radius: 12px; padding: 12px; text-align: center; margin-bottom: 15px;">
-        <h4 style="margin: 0; color: #D81B60;">🌸 Vườn hoa Tri thức</h4>
-        <p style="font-size: 22px; font-weight: bold; margin: 5px 0; color: #C2185B;">{flowers} Bông hoa</p>
-        <small style="color: #666;">Chăm chỉ tự học để bảo vệ và tích lũy thêm hoa nhận Học bổng cuối kỳ nhé!</small>
-    </div>
-    """, unsafe_allow_html=True)
+    with st.sidebar.container(border=True):
+        st.markdown("<h4 style='text-align: center; color: #D81B60; margin: 0;'>🌸 Vườn hoa Tri thức</h4>", unsafe_allow_html=True)
+        st.markdown(f"<h2 style='text-align: center; color: #C2185B; margin: 5px 0;'>{flowers} Bông hoa</h2>", unsafe_allow_html=True)
+        st.caption("Chăm chỉ tự học mỗi ngày để bảo vệ và tích lũy thêm hoa nhận Học bổng cuối kỳ nhé!")
 
     st.sidebar.markdown("---")
     grade = st.sidebar.selectbox("Chọn khối lớp:", ["Khối 10", "Khối 11", "Khối 12"], index=1)
@@ -202,31 +196,27 @@ if role == "Học sinh":
     with tab1:
         st.subheader(f"📖 {lesson}")
         
-        # Nhúng mô hình 3D tương tác Zero-Install nếu là bài hình học
         if "Hình" in lesson or "không gian" in lesson:
-            st.markdown('<div class="stCard">', unsafe_allow_html=True)
-            st.markdown("🌐 **Mô hình Hình học Không gian 3D Tương tác (Zero-Install)**")
-            st.caption("Dùng chuột hoặc ngón tay chạm/vuốt để xoay 360°, phóng to/thu nhỏ quan sát các góc khuất (không cần cài app):")
-            render_interactive_3d_shape()
-            st.markdown('</div>', unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown("🌐 **Mô hình Hình học Không gian 3D Tương tác (Zero-Install)**")
+                st.caption("Dùng chuột hoặc ngón tay chạm/vuốt để xoay 360°, phóng to/thu nhỏ quan sát các góc khuất (không cần cài app):")
+                render_interactive_3d_shape()
             
         col_vid, col_nt = st.columns([1, 1])
         with col_vid:
-            st.markdown('<div class="stCard">', unsafe_allow_html=True)
-            st.markdown("🎬 **Video tóm tắt nhanh ($\le$ 2 phút do AI dựng)**")
-            st.caption("Cô đọng định lý trọng tâm + quét nhanh 1-3 ví dụ minh họa then chốt")
-            st.video("https://www.w3schools.com/html/mov_bbb.mp4")
-            if st.button("🌸 Đã xem bài giảng (+1 hoa)", key="btn_watch_vid"):
-                flowers = reward_flowers(student_id_input, flowers, 1, "chăm chỉ xem bài giảng vi mô")
-            st.markdown('</div>', unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown("🎬 **Video tóm tắt nhanh ($\le$ 2 phút do AI dựng)**")
+                st.caption("Cô đọng định lý trọng tâm + quét nhanh 1-3 ví dụ minh họa then chốt")
+                st.video("https://www.w3schools.com/html/mov_bbb.mp4")
+                if st.button("🌸 Đã xem bài giảng (+1 hoa)", key="btn_watch_vid"):
+                    flowers = reward_flowers(student_id_input, flowers, 1, "chăm chỉ xem bài giảng vi mô")
             
         with col_nt:
-            st.markdown('<div class="stCard">', unsafe_allow_html=True)
-            st.markdown("📝 **Ghi chú nhanh (Smart Notes)**")
-            st.latex(r"\sin^2(x) + \cos^2(x) = 1, \quad \forall x \in \mathbb{R}")
-            st.latex(r"1 + \tan^2(x) = \frac{1}{\cos^2(x)} \quad \left(x \neq \frac{\pi}{2} + k\pi\right)")
-            st.warning("⚠️ Chú ý: Luôn kiểm tra dấu của góc phần tư trước khi khai căn!")
-            st.markdown('</div>', unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown("📝 **Ghi chú nhanh (Smart Notes)**")
+                st.latex(r"\sin^2(x) + \cos^2(x) = 1, \quad \forall x \in \mathbb{R}")
+                st.latex(r"1 + \tan^2(x) = \frac{1}{\cos^2(x)} \quad \left(x \neq \frac{\pi}{2} + k\pi\right)")
+                st.warning("⚠️ Chú ý: Luôn kiểm tra dấu của góc phần tư trước khi khai căn!")
             
         log_activity(student_id_input, lesson, "THEORY_TAB", "VIEW_MICRO_LEARNING", 0, "N/A", "Xem lý thuyết và hình 3D")
 
@@ -234,52 +224,50 @@ if role == "Học sinh":
     # TAB 2: ĐỒNG HÀNH BÀI TẬP SGK & NÚT CỨU TRỢ SƯ PHẠM
     # --------------------------------------------------------------------------
     with tab2:
-        st.markdown('<div class="stCard">', unsafe_allow_html=True)
-        st.subheader("Bài tập 1.1 (Trang 15 - SGK Toán 11 Kết nối tri thức)")
-        st.markdown(r"Cho góc $\alpha$ thỏa mãn $\frac{\pi}{2} < \alpha < \pi$ và $\sin(\alpha) = \frac{3}{5}$. Hãy tính $\cos(\alpha)$.")
-        
-        c1, c2, c3 = st.columns([1, 1, 1])
-        with c1:
-            if st.button("💡 Mở gợi ý nấc 1"):
-                st.info("Áp dụng công thức $\sin^2(\alpha) + \cos^2(\alpha) = 1$. Chú ý vì $\frac{\pi}{2} < \alpha < \pi$ nên $\cos(\alpha) < 0$.")
-                log_activity(student_id_input, lesson, "SGK_1.1", "VIEW_HINT", 1, "N/A", "Xem gợi ý nấc 1")
-        with c2:
-            if st.button("🎯 Thử sức 01 bài tương tự (AI tạo)"):
-                prompt_gen = "Tạo 1 bài toán tương tự bài sin(a)=3/5 với pi/2 < a < pi, tính cos(a). Đổi số liệu, chỉ xuất đề bài và câu hỏi gợi mở, không đưa bài giải sẵn."
-                res_gen = client.models.generate_content(model="gemini-2.5-flash", contents=prompt_gen)
-                st.write(res_gen.text)
-                log_activity(student_id_input, lesson, "AI_GEN_EX", "GEN_EXERCISE", 0, "N/A", "Luyện bài tương tự")
-        with c3:
-            if st.button("✅ Em đã tự giải xong bài! (+2 hoa)"):
-                flowers = reward_flowers(student_id_input, flowers, 2, "tự lực hoàn thành bài tập SGK")
-                log_activity(student_id_input, lesson, "SGK_1.1", "SELF_SOLVED", 0, "TRUE", "Tự giải thành công")
+        with st.container(border=True):
+            st.subheader("Bài tập 1.1 (Trang 15 - SGK Toán 11 Kết nối tri thức)")
+            st.markdown(r"Cho góc $\alpha$ thỏa mãn $\frac{\pi}{2} < \alpha < \pi$ và $\sin(\alpha) = \frac{3}{5}$. Hãy tính $\cos(\alpha)$.")
+            
+            c1, c2, c3 = st.columns([1, 1, 1])
+            with c1:
+                if st.button("💡 Mở gợi ý nấc 1"):
+                    st.info("Áp dụng công thức $\sin^2(\alpha) + \cos^2(\alpha) = 1$. Chú ý vì $\frac{\pi}{2} < \alpha < \pi$ nên $\cos(\alpha) < 0$.")
+                    log_activity(student_id_input, lesson, "SGK_1.1", "VIEW_HINT", 1, "N/A", "Xem gợi ý nấc 1")
+            with c2:
+                if st.button("🎯 Thử sức 01 bài tương tự (AI tạo)"):
+                    prompt_gen = "Tạo 1 bài toán tương tự bài sin(a)=3/5 với pi/2 < a < pi, tính cos(a). Đổi số liệu, chỉ xuất đề bài và câu hỏi gợi mở, không đưa bài giải sẵn."
+                    res_gen = client.models.generate_content(model="gemini-2.5-flash", contents=prompt_gen)
+                    st.write(res_gen.text)
+                    log_activity(student_id_input, lesson, "AI_GEN_EX", "GEN_EXERCISE", 0, "N/A", "Luyện bài tương tự")
+            with c3:
+                if st.button("✅ Em đã tự giải xong bài! (+2 hoa)"):
+                    flowers = reward_flowers(student_id_input, flowers, 2, "tự lực hoàn thành bài tập SGK")
+                    log_activity(student_id_input, lesson, "SGK_1.1", "SELF_SOLVED", 0, "TRUE", "Tự giải thành công")
 
-        st.markdown("---")
-        # Nút chuyển tiếp sư phạm Human-in-the-Loop (2 lần hỏi nghiêm túc mới +1 hoa)
-        with st.expander("❓ Em vẫn chưa hiểu sau khi xem gợi ý? Gửi câu hỏi cho Thầy/Cô bộ môn"):
-            st.caption("Nếu điểm nghẽn nhận thức quá sâu, hãy gửi câu hỏi này lên lớp để Thầy/Cô giải đáp trực tiếp cho em nhé!")
-            st_note = st.text_input("Ghi chú thêm điểm em chưa thông suốt (nếu có):", placeholder="Ví dụ: Em chưa hiểu vì sao góc phần tư thứ II thì cos lại âm...", key="note_tab2")
-            if st.button("📩 [Em vẫn chưa hiểu, gửi câu này lên lớp để Thầy/Cô giải đáp]"):
-                try:
-                    send_question_to_teacher(
-                        student_id=student_id_input,
-                        student_name=profile.get('full_name', 'Học sinh'),
-                        lesson_id=lesson,
-                        exercise_id="SGK_1.1",
-                        student_note=st_note
-                    )
-                    df_inbox = conn.read(worksheet="TEACHER_INBOX")
-                    total_sent = len(df_inbox[df_inbox['student_id'] == student_id_input])
-                    if total_sent % 2 == 0:
-                        flowers = reward_flowers(student_id_input, flowers, 1, "gửi đủ 2 câu hỏi bế tắc nghiêm túc cho Thầy/Cô")
-                        st.success("✅ Đã gửi câu hỏi về Thầy/Cô! Tuyệt vời, em đã hoàn thành 2 lần hỏi bài nghiêm túc và nhận được +1 🌸 Bông hoa Tri thức!")
-                    else:
-                        st.success("✅ Đã gửi câu hỏi về Thầy/Cô! Thầy/Cô sẽ giải đáp trực tiếp cho em trên lớp.")
-                        st.info("💡 Em đã tích lũy 1/2 chặng đường hỏi bài. Hãy tiếp tục nỗ lực tự suy nghĩ nhé!")
-                    log_activity(student_id_input, lesson, "SGK_1.1", "ESCALATE_TO_TEACHER", 0, "N/A", f"Gửi câu hỏi cứu trợ (Lần {total_sent})")
-                except Exception:
-                    st.info("Hệ thống đã ghi nhận yêu cầu trợ giúp của em gửi tới Thầy/Cô!")
-        st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown("---")
+            with st.expander("❓ Em vẫn chưa hiểu sau khi xem gợi ý? Gửi câu hỏi cho Thầy/Cô bộ môn"):
+                st.caption("Nếu điểm nghẽn nhận thức quá sâu, hãy gửi câu hỏi này lên lớp để Thầy/Cô giải đáp trực tiếp cho em nhé!")
+                st_note = st.text_input("Ghi chú thêm điểm em chưa thông suốt (nếu có):", placeholder="Ví dụ: Em chưa hiểu vì sao góc phần tư thứ II thì cos lại âm...", key="note_tab2")
+                if st.button("📩 [Em vẫn chưa hiểu, gửi câu này lên lớp để Thầy/Cô giải đáp]"):
+                    try:
+                        send_question_to_teacher(
+                            student_id=student_id_input,
+                            student_name=profile.get('full_name', 'Học sinh'),
+                            lesson_id=lesson,
+                            exercise_id="SGK_1.1",
+                            student_note=st_note
+                        )
+                        df_inbox = conn.read(worksheet="TEACHER_INBOX")
+                        total_sent = len(df_inbox[df_inbox['student_id'] == student_id_input])
+                        if total_sent % 2 == 0:
+                            flowers = reward_flowers(student_id_input, flowers, 1, "gửi đủ 2 câu hỏi bế tắc nghiêm túc cho Thầy/Cô")
+                            st.success("✅ Đã gửi câu hỏi về Thầy/Cô! Tuyệt vời, em đã hoàn thành 2 lần hỏi bài nghiêm túc và nhận được +1 🌸 Bông hoa Tri thức!")
+                        else:
+                            st.success("✅ Đã gửi câu hỏi về Thầy/Cô! Thầy/Cô sẽ giải đáp trực tiếp cho em trên lớp.")
+                            st.info("💡 Em đã tích lũy 1/2 chặng đường hỏi bài. Hãy tiếp tục nỗ lực tự suy nghĩ nhé!")
+                        log_activity(student_id_input, lesson, "SGK_1.1", "ESCALATE_TO_TEACHER", 0, "N/A", f"Gửi câu hỏi cứu trợ (Lần {total_sent})")
+                    except Exception:
+                        st.info("Hệ thống đã ghi nhận yêu cầu trợ giúp của em gửi tới Thầy/Cô!")
 
     # --------------------------------------------------------------------------
     # TAB 3: TRỢ LÝ AI: CAMERA SOI VỞ & TỐI ƯU ÂM THANH MIC/LOA
@@ -298,7 +286,6 @@ if role == "Học sinh":
             img_file = st.camera_input("Chụp trang vở nháp của em:")
             if img_file:
                 image_to_process = Image.open(img_file)
-                # Nén ảnh để tăng tốc xử lý
                 image_to_process.thumbnail((1024, 1024))
         elif input_mode == "🎙️ Hỏi qua Mic":
             audio_file = st.audio_input("Nói thắc mắc của em:")
@@ -334,7 +321,6 @@ if role == "Học sinh":
                     response = client.models.generate_content(
                         model="gemini-2.5-flash", contents=[prompt_pedagogy, image_to_process]
                     )
-                    # Thưởng +1 hoa vì chụp ảnh vở hỏi bài
                     flowers = reward_flowers(student_id_input, flowers, 1, "chụp ảnh vở nháp học tập để hỏi bài")
                 else:
                     response = client.models.generate_content(
@@ -350,9 +336,8 @@ if role == "Học sinh":
                     display_part = parts[0].replace("---PHẦN HIỂN THỊ MÀN HÌNH---", "").strip()
                     speech_part = parts[1].strip()
 
-                st.markdown('<div class="stCard">', unsafe_allow_html=True)
-                st.markdown(display_part)
-                st.markdown('</div>', unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown(display_part)
                 
                 try:
                     tts = gTTS(text=speech_part, lang='vi', slow=False)
@@ -365,7 +350,7 @@ if role == "Học sinh":
                 log_activity(student_id_input, lesson, "AI_TUTOR", "MULTIMODAL_CHECK", 0, "N/A", "Chữa bài tương tác tối ưu âm thanh")
 
     # --------------------------------------------------------------------------
-    # TAB 4: PHÒNG LUYỆN ĐỀ CHUẨN HÓA & KHẢO THÍ VƯỢT ẢI (+1, +2, +3 HOA)
+    # TAB 4: PHÒNG LUYỆN ĐỀ CHUẨN HÓA
     # --------------------------------------------------------------------------
     with tab4:
         st.subheader("🎯 Phòng Luyện Đề Chuẩn Hóa Khảo Thí")
@@ -388,33 +373,31 @@ if role == "Học sinh":
                 cat_filter = "DGNL" if "ĐGNL" in exam_track else "THPT"
                 st.success(f"Đã trích xuất đề thi thành công từ Ngân hàng câu hỏi chuẩn hóa cho {profile.get('full_name')}!")
                 
-                st.markdown('<div class="stCard">', unsafe_allow_html=True)
-                st.markdown(f"### 📋 BỘ ĐỀ: {exam_track.upper()} - {exam_name.upper()}")
-                st.markdown("#### PHẦN I: Câu trắc nghiệm nhiều phương án lựa chọn (A, B, C, D)")
-                st.markdown(r"**Câu 1:** Cho hàm số $y = f(x)$ liên tục trên $\mathbb{R}$ và có bảng biến thiên... Điểm cực đại của hàm số đã cho là:")
-                st.markdown("A. $x = 1$  \nB. $x = -1$  \nC. $y = 2$  \nD. $x = 0$")
+                with st.container(border=True):
+                    st.markdown(f"### 📋 BỘ ĐỀ: {exam_track.upper()} - {exam_name.upper()}")
+                    st.markdown("#### PHẦN I: Câu trắc nghiệm nhiều phương án lựa chọn (A, B, C, D)")
+                    st.markdown(r"**Câu 1:** Cho hàm số $y = f(x)$ liên tục trên $\mathbb{R}$ và có bảng biến thiên... Điểm cực đại của hàm số đã cho là:")
+                    st.markdown("A. $x = 1$  \nB. $x = -1$  \nC. $y = 2$  \nD. $x = 0$")
+                    
+                    st.markdown("#### PHẦN II: Câu trắc nghiệm Đúng / Sai")
+                    st.markdown(r"**Câu 2:** Cho hàm số $f(x) = x^3 - 3x + 2$. Xét tính đúng/sai của các mệnh đề:")
+                    st.markdown("a) Hàm số đồng biến trên khoảng $(1; +\infty)$.  \nb) Giá trị cực tiểu của hàm số bằng $0$.  \nc) Đồ thị hàm số cắt trục hoành tại 3 điểm phân biệt.  \nd) Điểm uốn của đồ thị hàm số là $I(0; 2)$.")
+                    
+                    if "ĐGNL" in exam_track:
+                        st.markdown("#### PHẦN III: Câu hỏi mô hình hóa / Toán thực tế (Đặc trưng ĐGNL)")
+                        st.markdown(r"**Câu 3 (Toán tối ưu kinh tế):** Một xưởng sản xuất ước tính chi phí $C(x) = x^2 + 40x + 2500$ (nghìn đồng). Biết giá bán mỗi sản phẩm là $120$ nghìn đồng. Hỏi cần sản xuất bao nhiêu sản phẩm để lợi nhuận thu về là lớn nhất?")
+                        st.text_input("Đáp số của em (điền giá trị số):", key="ans_part3")
                 
-                st.markdown("#### PHẦN II: Câu trắc nghiệm Đúng / Sai")
-                st.markdown(r"**Câu 2:** Cho hàm số $f(x) = x^3 - 3x + 2$. Xét tính đúng/sai của các mệnh đề:")
-                st.markdown("a) Hàm số đồng biến trên khoảng $(1; +\infty)$.  \nb) Giá trị cực tiểu của hàm số bằng $0$.  \nc) Đồ thị hàm số cắt trục hoành tại 3 điểm phân biệt.  \nd) Điểm uốn của đồ thị hàm số là $I(0; 2)$.")
-                
-                if "ĐGNL" in exam_track:
-                    st.markdown("#### PHẦN III: Câu hỏi mô hình hóa / Toán thực tế (Đặc trưng ĐGNL)")
-                    st.markdown(r"**Câu 3 (Toán tối ưu kinh tế):** Một xưởng sản xuất ước tính chi phí $C(x) = x^2 + 40x + 2500$ (nghìn đồng). Biết giá bán mỗi sản phẩm là $120$ nghìn đồng. Hỏi cần sản xuất bao nhiêu sản phẩm để lợi nhuận thu về là lớn nhất?")
-                    st.text_input("Đáp số của em (điền giá trị số):", key="ans_part3")
-                
-                st.markdown('</div>', unsafe_allow_html=True)
                 log_activity(student_id_input, "EXAM_BANK", exam_track, "EXTRACT_BANK", 0, "N/A", f"Trích xuất đề {exam_track}")
             except Exception:
                 st.warning("Đang kết nối Ngân hàng câu hỏi mẫu, đề thi chuẩn hóa đã sẵn sàng hiển thị.")
 
-        # Mô phỏng chấm điểm và cộng hoa theo thang điểm mới: 8đ=+1, 9đ=+2, 10đ=+3
         st.markdown("---")
         st.caption("🏆 Sau khi nộp bài khảo thí, hệ thống tự động chấm và quy đổi điểm thưởng:")
         mock_score = st.slider("Giả lập điểm số đạt được để kiểm tra nhận hoa thưởng:", 5.0, 10.0, 8.5, 0.5)
         if st.button("Nộp bài & Nhận kết quả"):
             if mock_score >= 10.0:
-                flowers = reward_flowers(student_id_input, flowers, 3, f"đạt điểm tuyệt đối 10.0 môn Toán")
+                flowers = reward_flowers(student_id_input, flowers, 3, "đạt điểm tuyệt đối 10.0 môn Toán")
             elif mock_score >= 9.0:
                 flowers = reward_flowers(student_id_input, flowers, 2, f"đạt điểm xuất sắc {mock_score} môn Toán")
             elif mock_score >= 8.0:
@@ -429,7 +412,6 @@ else:
     st.header("📊 Bảng Điều Khiển Giáo Viên: Dự Báo Năng Lực & Cố Vấn Sư Phạm")
     st.caption("Dữ liệu tự động đồng bộ thời gian thực từ hoạt động học tập của học sinh")
     
-    # 1. Hộp thư tiếp nhận câu hỏi cứu trợ sư phạm từ học sinh
     st.subheader("📬 Hộp Thư Cứu Trợ Sư Phạm (Học sinh gửi lên từ Web App)")
     try:
         df_inbox = conn.read(worksheet="TEACHER_INBOX")
@@ -442,7 +424,6 @@ else:
 
     st.markdown("---")
     
-    # 2. Hồ sơ năng lực và chẩn đoán dự báo
     st.subheader("👥 Danh sách và Phân tích Năng lực Học sinh (Vườn hoa Tri thức)")
     df_students = conn.read(worksheet="STUDENT_PROFILES")
     st.dataframe(df_students, use_container_width=True)
@@ -469,6 +450,5 @@ else:
             3. HÀNH ĐỘNG SƯ PHẠM: 2 việc cụ thể giáo viên nên làm trực tiếp trên lớp và 1 định hướng học tập trên Web App.
             """
             res_advise = client.models.generate_content(model="gemini-2.5-flash", contents=prompt_advise)
-            st.markdown('<div class="stCard">', unsafe_allow_html=True)
-            st.markdown(res_advise.text)
-            st.markdown('</div>', unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown(res_advise.text)
