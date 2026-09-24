@@ -1,6 +1,6 @@
 streamlit
 google-genai
-streamlit-gsheets
+st-gsheets-connection
 pandas
 pillow
 gtts
